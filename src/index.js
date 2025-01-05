@@ -98,12 +98,16 @@ function Footer() {
 }
 
 function Pizza(props) {
+  function buyPizza() {
+    alert(`Go to payment for ${props.name}`);
+  }
   return (
     <div className="pizza">
       <img src={props.photoName} alt="pizza" />
       <h2>{props.name}</h2>
       <p>{props.ingredients}</p>
       <span>{props.price + 1000}</span>
+      <button onClick={buyPizza}>Buy</button>
     </div>
   );
 }
