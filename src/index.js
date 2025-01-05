@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 
 import "./index.css";
 
 const pizzaData = [
   {
+    id: 1,
     name: "Focaccia",
     ingredients: "Bread with italian olive oil and rosemary",
     price: 6,
@@ -12,6 +13,7 @@ const pizzaData = [
     soldOut: false,
   },
   {
+    id: 2,
     name: "Pizza Margherita",
     ingredients: "Tomato and mozarella",
     price: 10,
@@ -19,6 +21,7 @@ const pizzaData = [
     soldOut: false,
   },
   {
+    id: 3,
     name: "Pizza Spinaci",
     ingredients: "Tomato, mozarella, spinach, and ricotta cheese",
     price: 12,
@@ -26,6 +29,7 @@ const pizzaData = [
     soldOut: false,
   },
   {
+    id: 4,
     name: "Pizza Funghi",
     ingredients: "Tomato, mozarella, mushrooms, and onion",
     price: 12,
@@ -33,6 +37,7 @@ const pizzaData = [
     soldOut: false,
   },
   {
+    id: 5,
     name: "Pizza Salamino",
     ingredients: "Tomato, mozarella, and pepperoni",
     price: 15,
@@ -40,6 +45,7 @@ const pizzaData = [
     soldOut: true,
   },
   {
+    id: 6,
     name: "Pizza Prosciutto",
     ingredients: "Tomato, mozarella, ham, aragula, and burrata cheese",
     price: 18,
@@ -67,11 +73,21 @@ function Header() {
 }
 
 function Menu() {
+  let [remotePizzas, setRemotePizzas] = useState([]);
+  useEffect(() => {
+    fetch(process.env.REACT_APP_PIZZA_API_URL)
+      .then((res) => res.json())
+      .then((res) => {
+        setRemotePizzas(res);
+        console.log(res);
+      });
+  }, []);
   return (
     <main className="menu">
       <h1>Our menu</h1>
-      {pizzaData.map((p) => (
+      {remotePizzas.map((p) => (
         <Pizza
+          key={p.id}
           name={p.name}
           ingredients={p.ingredients}
           photoName={p.photoName}
