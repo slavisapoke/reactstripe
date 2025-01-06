@@ -4,6 +4,7 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import { useState } from "react";
+import { CreatePaymentIntentRequest } from "../models/create-payment-intent-request";
 
 export default function CheckoutForm() {
   const stripe = useStripe();
@@ -26,9 +27,15 @@ export default function CheckoutForm() {
       return;
     }
 
+    const intentRequest = new CreatePaymentIntentRequest("card", "usd");
+    console.log("Calling: " + process.env.REACT_APP_PAYMENT_CREATE_INTENT);
     // Create the PaymentIntent and obtain clientSecret from your server endpoint
     const res = await fetch(process.env.REACT_APP_PAYMENT_CREATE_INTENT, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(intentRequest),
     });
 
     const { clientSecret } = await res.json();
